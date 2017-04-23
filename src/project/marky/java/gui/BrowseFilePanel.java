@@ -64,12 +64,32 @@ public class BrowseFilePanel extends JPanel implements ActionListener
 	{
 		_file = file == null ? new File("") : file;
 		_text.setText(getFile().getAbsolutePath());
+		_dir.setCurrentDirectory(getCurrentDirectory(file));
 
 		final ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "File selected");
 
 		for (final IFileSelectionListener listener : _listeners)
 		{
 			listener.onFileSelection(e);
+		}
+	}
+
+	private File getCurrentDirectory(final File file)
+	{
+		if (file != null)
+		{
+			if (file.isDirectory())
+			{
+				return file;
+			}
+			else
+			{
+				return file.getParentFile();
+			}
+		}
+		else
+		{
+			return new File(new File("").getAbsolutePath());
 		}
 	}
 
